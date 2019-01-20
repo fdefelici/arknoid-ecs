@@ -1,8 +1,8 @@
 #ifndef COLLIDERDEBUGSYSTEM_H_
 #define COLLIDERDEBUGSYSTEM_H_
-#include "Engine.h"
+#include "AbstractSystem.h"
 
-class ColliderDebugSystem {
+class ColliderDebugSystem : AbstractSystem {
 
 public:
 	void execute(World* aWorld, Engine* engine);

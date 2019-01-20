@@ -8,12 +8,10 @@ void PaddleInputSystem::execute(World* aWorld, Engine* engine) {
 			RigidBody& rbody = aWorld->rbodies[i];
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-				//rbody.velocity.x = -speed * engine->deltaTime;
 				rbody.velocity.x = -speed;
 				rbody.velocity.y = 0.f;
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-				//rbody.velocity.x = speed * engine->deltaTime;
 				rbody.velocity.x = speed;
 				rbody.velocity.y = 0.f;
 			}

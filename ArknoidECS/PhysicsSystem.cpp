@@ -4,7 +4,6 @@
 
 void PhysicsSystem::execute(World* aWorld, Engine* engine) {
 	for (int i = 0; i < MAX_ENTITY_NUM; i++) {
-		//if (!aWorld->has_component(i, COMP__BOX_COLLIDER | COMP__RIGID_BODY)) continue;
 		if (!aWorld->has_component(i, COMP__BOX_COLLIDER)) continue;
 
 		bool collisionDetected = false;
@@ -39,8 +38,7 @@ void PhysicsSystem::execute(World* aWorld, Engine* engine) {
 
 			//IF Minkowsky Diff Box contains origin (0,0)
 			if (md.containsOrigin()) {
-				// Then a collision exists
-				// Look for penetration vector
+				// Then a collision exists, so look for penetration vector
 				collisionDetected = true;
 				sf::Vector2f penetrationVec = md.shortestVectorToOrigin();
 				CollisionSide collSide;
@@ -48,9 +46,7 @@ void PhysicsSystem::execute(World* aWorld, Engine* engine) {
 				else if (penetrationVec.x < 0) collSide = CollisionSide::LEFT;
 				else if (penetrationVec.y < 0) collSide = CollisionSide::TOP; //INVERTITO
 				else if (penetrationVec.y > 0) collSide = CollisionSide::BOTTOM; //INVERTITO
-				else {
-					//std::cout << penetrationVec.x << ", " << penetrationVec.y << std::endl;
-					//std::cout << md.left() << ", " << md.right() << ", " << md.top() << ", " << md.bottom() << std::endl;
+				else {					
 					if (md.bottom() == 0) collSide = CollisionSide::BOTTOM;
 					else if (md.top() == 0) collSide = CollisionSide::TOP;
 					else if (md.right() == 0) collSide = CollisionSide::RIGHT;
@@ -77,18 +73,18 @@ void PhysicsSystem::execute(World* aWorld, Engine* engine) {
 
 		if (collisionDetected) {
 			if (!box1.collision.has_begun && !box1.collision.is_ongoing) {
-				//std::cout << "Colli begin ("<< i <<"): " << box1.collision.hitSide << std::endl;
+				//Collision begin
 				aWorld->colliders[i].collision.has_begun = true;
 				aWorld->colliders[i].collision.is_ongoing = false;
 			}
 			else if (box1.collision.has_begun) {
-				//std::cout << "Colli ongoing " << i << std::endl;
+				//Collision continue
 				aWorld->colliders[i].collision.has_begun = false;
 				aWorld->colliders[i].collision.is_ongoing = true;
 			}
 		}
 		else if (box1.collision.has_begun || box1.collision.is_ongoing) {
-			//std::cout << "Colli end " << i << std::endl;
+			//Collision ends
 			box1.collision.has_begun = false;
 			box1.collision.is_ongoing = false;
 		}
@@ -114,25 +110,21 @@ void PhysicsSystem::execute(World* aWorld, Engine* engine) {
 			case CollisionSide::RIGHT: otherSideNormal = { -1, 0 }; break;
 			}
 
-			//1
-			//                    <--- N
-			// ball ---->    <-------- paddle
-
+			//A possible reflection case:
+			//                    <--- other normal of collision side
+			// mine ---->    <-------- other velocity
 			float cosOmine = Vector2DLib::cosO(rbody.velocity, otherSideNormal);
 			float cosOother = Vector2DLib::cosO(aWorld->rbodies[other].velocity, otherSideNormal);
 			
+			//If object is moving in "opposite" direction to the other
 			if (cosOother <= 0 || ( cosOother == 1 & cosOmine <= 0 )) {
+				//then change velocity reflecting it
 				rbody.velocity = Vector2DLib::reflect(rbody.velocity, otherSideNormal);
-				std::cout << "REFLECT ==> " << "COS mine: " << cosOmine << " COS other: " << cosOother << std::endl;
-			}
-			else {
-				std::cout << "COS mine: " << cosOmine  << " COS other: " << cosOother << std::endl;
 			}
 			transf.position += rbody.velocity * engine->deltaTime;
 		}
 		else if ( (coll.has_begun || coll.is_ongoing)  && rbody.isKinematic) {
 			//transf.position -= (coll.penetration);
-
 			sf::Vector2f collDir = coll.penetration;
 			/* Caso in cui la differenza di Minkowski ha un lato sullo 0.
 				Per cui il penetration vector risulterebbe (0, 0) in quanto
@@ -143,16 +135,16 @@ void PhysicsSystem::execute(World* aWorld, Engine* engine) {
 			*/
 			if (coll.penetration.x == 0 && coll.penetration.y == 0) {
 				switch (coll.hitSide) {
-				case CollisionSide::LEFT:   collDir = { -1, 0 }; break;
-				case CollisionSide::RIGHT:  collDir = { 1, 0 };  break;
-				case CollisionSide::TOP:    collDir = { 0, -1 }; break;
-				case CollisionSide::BOTTOM: collDir = { 0, 1 };  break;
+				case CollisionSide::BOTTOM: collDir = { 0, -1 };  break;
+				case CollisionSide::TOP:    collDir = { 0, 1 }; break;
+				case CollisionSide::LEFT:   collDir = { 1, 0 }; break;
+				case CollisionSide::RIGHT:  collDir = { -1, 0 };  break;
 				}
 			}
 
 			float cosO = Vector2DLib::cosO(rbody.velocity, collDir);
-			//Se negativo allora velocity tende ad essere opposta alla penetration
-			//quindi permetto all'oggetto di allontanarsi
+			//if negative then velocity is "opposite" to the collision direction,
+			//so allow the object to move away
 			if (cosO < 0) {
 				transf.position += (rbody.velocity * engine->deltaTime * coll.velocityRatio);
 			}

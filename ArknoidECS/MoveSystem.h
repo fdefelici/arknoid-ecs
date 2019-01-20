@@ -1,8 +1,8 @@
 #ifndef MOVESYSTEM_H_
 #define MOVESYSTEM_H_
-#include "Engine.h"
+#include "AbstractSystem.h"
 
-class MoveSystem {
+class MoveSystem : AbstractSystem {
 
 public:
 	void execute(World* aWorld, Engine* engine);

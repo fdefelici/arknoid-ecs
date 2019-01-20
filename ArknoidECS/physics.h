@@ -58,16 +58,18 @@ public:
 	}
 
 	/**
-		Coseno dell'angolo tra i vettori V1 e V2
+		Cosine of the angle O (teta) between vectors V1 and V2
 		cosO = dot(V1,V2) / mag(V1)*mag(V2)
 
-		range risultato [-1, 1]
-		Se cosO < 0 allora i 2 vettori si muovono in direzioni opposte 
-		raggiungendo il massimo a -1 (180°)
+		if cosO < 0 then vectors are heading in opposite direction 
+		reaching max of -1 at angle 180°
+
+		@param vectors v1 and v2 
+		@return cosine value in range [-1, 1]
 	**/
 	static float cosO(sf::Vector2f& v1, sf::Vector2f& v2) {
 		float dotProd = Vector2DLib::dotProduct(v1, v2);
-		if (dotProd == 0.f) return 0.f; //Solo per evitare che Mag siano 0 e divido 0 per 0
+		if (dotProd == 0.f) return 0.f; //this to avoid division by 0 in case magnetude is 0.
 		float magV1 = Vector2DLib::magnitude(v1);
 		float magV2 = Vector2DLib::magnitude(v2);
 		return dotProd / (magV1 * magV2);

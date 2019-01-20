@@ -1,8 +1,8 @@
 #ifndef PADDLEINPUTSYSTEM_H_
 #define PADDLEINPUTSYSTEM_H_
-#include "Engine.h"
+#include "AbstractSystem.h"
 
-class PaddleInputSystem {
+class PaddleInputSystem : AbstractSystem {
 
 public:
 	void execute(World* aWorld, Engine* engine);	

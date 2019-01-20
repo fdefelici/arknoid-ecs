@@ -1,8 +1,8 @@
 #ifndef PHYSICSSYSTEM_H_
 #define PHYSICSSYSTEM_H_
-#include "Engine.h"
+#include "AbstractSystem.h"
 
-class PhysicsSystem {
+class PhysicsSystem : AbstractSystem {
 
 public:
 	void execute(World* aWorld, Engine* engine);

@@ -8,7 +8,7 @@ TEST(AABBTest, NoContainsOrigin) {
 }
 
 /**
-	Remember the Y is positive going toward the bottom.
+	Remember on window coordinates the Y is positive going toward the bottom.
 	(growing inverse to the cartesian axis)
 **/
 /*
@@ -27,7 +27,7 @@ TEST(AABBTest, ContainsOrigin) {
 }
 
 
-// Y inverted here in the cartesian axis
+// Y inverted here in the cartesian axis example
 /*
 			   |     (2, 2) ..............(8, 2)
 			   |        .

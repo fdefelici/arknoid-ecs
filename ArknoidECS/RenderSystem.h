@@ -1,8 +1,8 @@
 #ifndef RENDERSYSTEM_H_
 #define RENDERSYSTEM_H_
-#include "Engine.h"
+#include "AbstractSystem.h"
 
-class RenderSystem {
+class RenderSystem : AbstractSystem {
 
 public:
 	void execute(World* aWorld, Engine* engine);

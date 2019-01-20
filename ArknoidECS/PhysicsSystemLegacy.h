@@ -1,8 +1,11 @@
 #ifndef PHYSICSSYSTEMLEGACY_H_
 #define PHYSICSSYSTEMLEGACY_H_
-#include "Engine.h"
+#include "AbstractSystem.h"
 
-class PhysicsSystemLegacy {
+/*
+	Naive physics implementation for testing purpose
+*/
+class PhysicsSystemLegacy : AbstractSystem {
 
 public:
 	void execute(World* aWorld, Engine* engine);
