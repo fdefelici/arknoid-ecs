@@ -44,8 +44,8 @@ void PhysicsSystem::execute(World* aWorld, Engine* engine) {
 				CollisionSide collSide;
 				if (penetrationVec.x > 0) collSide = CollisionSide::RIGHT;
 				else if (penetrationVec.x < 0) collSide = CollisionSide::LEFT;
-				else if (penetrationVec.y < 0) collSide = CollisionSide::TOP; //INVERTITO
-				else if (penetrationVec.y > 0) collSide = CollisionSide::BOTTOM; //INVERTITO
+				else if (penetrationVec.y < 0) collSide = CollisionSide::TOP; //inverted for coehrence with view y
+				else if (penetrationVec.y > 0) collSide = CollisionSide::BOTTOM; //inverted for coehrence with view y
 				else {					
 					if (md.bottom() == 0) collSide = CollisionSide::BOTTOM;
 					else if (md.top() == 0) collSide = CollisionSide::TOP;
@@ -104,8 +104,8 @@ void PhysicsSystem::execute(World* aWorld, Engine* engine) {
 			sf::Vector2f otherSideNormal;
 			switch (coll.hitSide)
 			{
-			case CollisionSide::BOTTOM: otherSideNormal = { 0, -1 }; break; //INVERTITO
-			case CollisionSide::TOP: otherSideNormal = { 0, 1 }; break;     //INVERTITO
+			case CollisionSide::BOTTOM: otherSideNormal = { 0, -1 }; break; //inverted for coehrence with view y
+			case CollisionSide::TOP: otherSideNormal = { 0, 1 }; break;     //inverted for coehrence with view y
 			case CollisionSide::LEFT: otherSideNormal = { 1, 0 }; break;
 			case CollisionSide::RIGHT: otherSideNormal = { -1, 0 }; break;
 			}
@@ -126,12 +126,11 @@ void PhysicsSystem::execute(World* aWorld, Engine* engine) {
 		else if ( (coll.has_begun || coll.is_ongoing)  && rbody.isKinematic) {
 			//transf.position -= (coll.penetration);
 			sf::Vector2f collDir = coll.penetration;
-			/* Caso in cui la differenza di Minkowski ha un lato sullo 0.
-				Per cui il penetration vector risulterebbe (0, 0) in quanto
-				sarebbe lo scostamento minimo dall'origine che è appunto 0.
-				Per cui in questo caso ricavo la direzione della collisione
-				dall'hitSide. Cosi riesco a dare un denominiatore diverso da 0 al
-				calcolo del cosO.
+			/*  Case where Minkowsky difference AABB has an edge on 0 axis (x or y).
+				The penetration vector would be (0, 0) by the fact this were the
+				minimum displacement by the origin.
+				So in this case try to calculate explictly the penetration direction.
+				(To have a divisor diffent to zero for later cosO calculation)
 			*/
 			if (coll.penetration.x == 0 && coll.penetration.y == 0) {
 				switch (coll.hitSide) {
