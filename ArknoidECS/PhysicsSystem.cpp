@@ -117,7 +117,7 @@ void PhysicsSystem::execute(World* aWorld, Engine* engine) {
 			float cosOother = Vector2DLib::cosO(aWorld->rbodies[other].velocity, otherSideNormal);
 			
 			//If object is moving in "opposite" direction to the other
-			if (cosOother <= 0 || ( cosOother == 1 & cosOmine <= 0 )) {
+			if (cosOother <= 0 || ( cosOother == 1 && cosOmine <= 0 )) {
 				//then change velocity reflecting it
 				rbody.velocity = Vector2DLib::reflect(rbody.velocity, otherSideNormal);
 			}

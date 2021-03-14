@@ -44,8 +44,8 @@ void PhysicsSystemLegacy::execute(World* aWorld, Engine* engine) {
 			float box2CenterX = transf2.position.x + box2.extent.x / 2.f;
 			float box2CenterY = transf2.position.y + box2.extent.y / 2.f;
 
-			float w = 0.5 * (box1.extent.x + box2.extent.x);
-			float h = 0.5 * (box1.extent.y + box2.extent.y);
+			float w = 0.5f * (float)(box1.extent.x + box2.extent.x);
+			float h = 0.5f * (float)(box1.extent.y + box2.extent.y);
 			float dx = box1CenterX - box2CenterX;
 			float dy = box1CenterY - box2CenterY;
 

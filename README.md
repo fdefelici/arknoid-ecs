@@ -1,6 +1,8 @@
 # arknoid-ecs
 Experimenting Entity-Component-System (ECS) and Physics by implementing Arknoid game
 
+![Arknoid Screenshot](./screenshot.png)
+
 ## Objectives
 Arknoid game used as a playground to make experiments with:
 * ***SFML2*** for Window Management, Rendering and Audio
@@ -8,7 +10,7 @@ Arknoid game used as a playground to make experiments with:
 * ***Physics Pattern*** such as ***AABB Collision Detection*** (Static and Sweep Test to avoid tunneling effect) and ***Minkowsky Algorithm***
 
 ## Development Environment
-* Visual Studio 2017
+* Visual Studio 2019
 * CPP11 compliant
 * GoogleTest (GTest) framework for unit testing
-* SFML 2.5.1
+* SFML 2.5.1 for Window/Input/Audio management
